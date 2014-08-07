@@ -12,3 +12,5 @@ User stories completed:
 3. Edit  and save an item in the list, by clicking on the item.
 
 Following is walkthrough of what the app can do.
+
+![](https://github.com/nishabn89/thecodepath/blob/master/todo_demo.gif)
