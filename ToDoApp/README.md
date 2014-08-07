@@ -13,4 +13,4 @@ User stories completed:
 
 Following is walkthrough of what the app can do.
 
-![](https://github.com/nishabn89/thecodepath/blob/master/todo_demo.gif)
+![](https://github.com/nishabn89/thecodepath/blob/master/ToDoApp/todo_demo.gif)
