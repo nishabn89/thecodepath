@@ -2,7 +2,10 @@ package com.example.todoapp;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,9 +32,19 @@ public class MainActivity extends Activity implements OnClickListener{
     ArrayAdapter<String> itemsAdapter;
     Button mBtnAddItem;
     EditText mEtNewItem;
+
+
+    private SQLiteDatabase database;
+    private String[] databaseCols = { SQLLiteHelper.COLUMN_ID,
+        SQLLiteHelper.COLUMN_DESC };
+    SQLLiteHelper  mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         mDbHelper = new SQLLiteHelper(this);
+        database = mDbHelper.getWritableDatabase();
+
         setContentView(R.layout.activity_todo);
         lvItems = (ListView) findViewById(R.id.lvItems);
         items = new ArrayList<String>();
@@ -94,22 +107,32 @@ public class MainActivity extends Activity implements OnClickListener{
     }
 
     private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
         try{
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch(IOException e) {
+            Cursor cursor = database.query(SQLLiteHelper.TABLE_ITEMS,
+                databaseCols, null, null, null, null, null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                items.add(cursor.getString(1));
+              cursor.moveToNext();
+            }
+            cursor.close();
+        } catch(Exception e) {
             items = new ArrayList<String>();
             e.printStackTrace();
         }
     }
 
     private void saveItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
         try{
-            FileUtils.writeLines(todoFile,items);
-        } catch(IOException e) {
+            mDbHelper.dropTable(database);
+            database = mDbHelper.getWritableDatabase();
+            for(String item : items){
+                ContentValues values = new ContentValues();
+                values.put(SQLLiteHelper.COLUMN_DESC, item);
+                database.insert(SQLLiteHelper.TABLE_ITEMS, null,
+                    values);
+            }
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
