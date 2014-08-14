@@ -8,12 +8,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
+    <LinearLayout
+        android:id="@+id/priorityLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnMoveUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move up" 
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/btnMoveDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move down" 
+            android:enabled="false"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/lvItems"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_view_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_below="@id/priorityLayout"
+        android:choiceMode="singleChoice">
     </ListView>
 
     <Button
@@ -35,7 +56,6 @@
         android:layout_toLeftOf="@+id/btnAddItem"
         android:ems="10"
         android:hint="@string/add_item_edit_hint" >
-
     </EditText>
 
 </RelativeLayout>
